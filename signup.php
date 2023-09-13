@@ -28,7 +28,7 @@ if (isset($_SESSION['user'])) {
     }
     ?>
     <div class="register-box-body">
-      <p class="login-box-msg">Register a new membership</p>
+      <p class="login-box-msg"><marquee behavior="" direction="">Farmer Portal Registration</marquee></p>
 
       <form action="register.php" method="POST">
         <div class="form-group has-feedback">
@@ -50,6 +50,10 @@ if (isset($_SESSION['user'])) {
         <div class="form-group has-feedback">
           <input type="password" class="form-control" name="repassword" placeholder="Retype password" required>
           <span class="glyphicon glyphicon-log-in form-control-feedback"></span>
+        </div>
+        <div class="form-group has-feedback">
+          <input type="tel" class="form-control" name="phone" placeholder="Contact no." value="<?php echo (isset($_SESSION['phone'])) ? $_SESSION['phone'] : '' ?>" required>
+          <span class="glyphicon glyphicon-earphone form-control-feedback"></span>
         </div>
         <hr>
         <div class="row">

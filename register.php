@@ -9,19 +9,22 @@ $lastname = $_POST['lastname'];
 $email = $_POST['email'];
 $password = $_POST['password'];
 $repassword = $_POST['repassword'];
+$phone = $_POST['phone'];
 
 $_SESSION['firstname'] = $firstname;
 $_SESSION['lastname'] = $lastname;
 $_SESSION['email'] = $email;
+$_SESSION['phone'] = $phone;
 
 if(!ctype_alpha($firstname) || !ctype_alpha($lastname)){
 	$_SESSION['error'] = 'Last and first names must be alphabetic';
 	header('location: signup.php');
+	exit();
 }
-
-if ($password != $repassword) {
+else if ($password != $repassword) {
 	$_SESSION['error'] = 'Passwords did not match';
 	header('location: signup.php');
+	exit();
 }
 else{
 $conn = $pdo->open();
@@ -41,10 +44,10 @@ $password = password_hash($password, PASSWORD_DEFAULT);
 $set = '123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 $code = substr(str_shuffle($set), 0, 12);
 
-$stmt = $conn->prepare("INSERT INTO users (email, password, firstname, lastname, activate_code, created_on) VALUES (:email, :password, :firstname, :lastname, :code, :now)");
-$stmt->execute(['email' => $email, 'password' => $password, 'firstname' => $firstname, 'lastname' => $lastname, 'code' => $code, 'now' => $now]);
+$stmt = $conn->prepare("INSERT INTO users (email, password, firstname, lastname, activate_code, created_on,contact_info) VALUES (:email, :password, :firstname, :lastname, :code, :now,:phone)");
+$stmt->execute(['email' => $email, 'password' => $password, 'firstname' => $firstname, 'lastname' => $lastname, 'code' => $code, 'now' => $now, 'phone'=>$phone]);
 $userid = $conn->lastInsertId();
-
+header('location: signup.php');
 }
 }
 $pdo->close();
