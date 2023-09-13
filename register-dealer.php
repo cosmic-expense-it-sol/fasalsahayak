@@ -1,50 +1,63 @@
 <?php
 
 
+error_reporting(E_ALL);
 include 'includes/session.php';
 
 
-$firstname = $_POST['firstname'];
-$lastname = $_POST['lastname'];
-$email = $_POST['email'];
+$name = $_POST['name'];
+$mail = $_POST['mail'];
+$phone = $_POST['phone'];
+$adhar = $_POST['adhar'];
+$pan = $_POST['pan'];
 $password = $_POST['password'];
-$repassword = $_POST['repassword'];
+$dlr = $_POST['dlr'];
 
-$_SESSION['firstname'] = $firstname;
-$_SESSION['lastname'] = $lastname;
-$_SESSION['email'] = $email;
 
-if(!ctype_alpha($firstname) || !ctype_alpha($lastname)){
-	$_SESSION['error'] = 'Last and first names must be alphabetic';
-	header('location: signup.php');
-}
-
-if ($password != $repassword) {
-	$_SESSION['error'] = 'Passwords did not match';
-	header('location: signup.php');
-}
-else{
-$conn = $pdo->open();
-$stmt = $conn->prepare("SELECT COUNT(*) AS numrows FROM users WHERE email=:email");
-$stmt->execute(['email' => $email]);
-$row = $stmt->fetch();
-if ($row['numrows'] > 0) {
-	$_SESSION['error'] = 'Email already taken';
-	header('location: signup.php');
+if (strlen($phone)!=10) {
+	$_SESSION['error'] = 'Phone number must be exact 10 characters!';
+	header('location: signup-dealer.php');
+	exit();
 } 
-else{
+else if (strlen($adhar)!=12) {
+	$_SESSION['error'] = 'AADHAR number must be exact 12 characters!';
+	header('location: signup-dealer.php');
+	exit();
+} 
+else if (strlen($pan)!=10) {
+	$_SESSION['error'] = 'PAN number must be exact 10 characters!';
+	header('location: signup-dealer.php');
+	exit();
+} 
+else if (strlen($dlr)!=6) {
+	$_SESSION['error'] = 'DLR ID must be exact 06 characters!';
+	header('location: signup-dealer.php');
+	exit();
+} 
+else {
+	$conn = $pdo->open();
+	$stmt = $conn->prepare("SELECT COUNT(*) AS numrows FROM dealer WHERE email=:email");
+	$stmt->execute(['email' => $email]);
+	$row = $stmt->fetch();
+	if ($row['numrows'] > 0) {
+		$_SESSION['error'] = 'Email already taken';
+		header('location: signup-dealer.php');
+	} else {
+		$password = password_hash($password, PASSWORD_DEFAULT);
+		$stmt = $conn->prepare("INSERT INTO dealer (name,email,phone,adhar,pan,dlr_id,password) VALUES (:name,:email,:phone,:adhar,:pan,:dlr,:password)");
+		$stmt->execute([
+			'name' => $name,
+			'email' => $mail,
+			'phone' => $phone,
+			'adhar' => $adhar,
+			'pan' => $pan,
+			'password' => $password,
+			'dlr' => $dlr
+		]);
+		$userid = $conn->lastInsertId();
+		
+		header('location: signup-dealer-success.php');
 
-$now = date('Y-m-d');
-$password = password_hash($password, PASSWORD_DEFAULT);
-
-//generate code
-$set = '123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-$code = substr(str_shuffle($set), 0, 12);
-
-$stmt = $conn->prepare("INSERT INTO users (email, password, firstname, lastname, activate_code, created_on) VALUES (:email, :password, :firstname, :lastname, :code, :now)");
-$stmt->execute(['email' => $email, 'password' => $password, 'firstname' => $firstname, 'lastname' => $lastname, 'code' => $code, 'now' => $now]);
-$userid = $conn->lastInsertId();
-
-}
+	}
 }
 $pdo->close();

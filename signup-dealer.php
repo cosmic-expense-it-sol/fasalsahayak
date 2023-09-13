@@ -4,13 +4,6 @@ if (isset($_SESSION['user'])) {
   header('location: cart_view.php');
 }
 
-if (isset($_SESSION['captcha'])) {
-  $now = time();
-  if ($now >= $_SESSION['captcha']) {
-    unset($_SESSION['captcha']);
-  }
-}
-
 ?>
 <?php include 'includes/header.php'; ?>
 
@@ -36,38 +29,46 @@ if (isset($_SESSION['captcha'])) {
     }
     ?>
     <div class="register-box-body">
-      <p class="login-box-msg">Register as DEALER</p>
+      <p class="login-box-msg"><marquee behavior="" direction="">Sahayk Dealer Request</marquee></p>
 
-      <form action="register.php" method="POST">
+      <form action="register-dealer.php" method="POST">
         <div class="form-group has-feedback">
-          <input type="text" class="form-control" name="firstname" placeholder="Firstname" value="<?php echo (isset($_SESSION['firstname'])) ? $_SESSION['firstname'] : '' ?>" required>
+          <input type="text" class="form-control" name="name" placeholder="NAME (as per PAN)" required>
           <span class="glyphicon glyphicon-user form-control-feedback"></span>
         </div>
+
         <div class="form-group has-feedback">
-          <input type="text" class="form-control" name="lastname" placeholder="Lastname" value="<?php echo (isset($_SESSION['lastname'])) ? $_SESSION['lastname'] : '' ?>" required>
-          <span class="glyphicon glyphicon-user form-control-feedback"></span>
-        </div>
-        <div class="form-group has-feedback">
-          <input type="email" class="form-control" name="email" placeholder="Email" value="<?php echo (isset($_SESSION['email'])) ? $_SESSION['email'] : '' ?>" required>
+          <input type="email" class="form-control" name="mail" placeholder="MAIL (linked with AADHAR)" required>
           <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
         </div>
+
         <div class="form-group has-feedback">
-          <input type="password" class="form-control" name="password" placeholder="Password" required>
+          <input type="tel" class="form-control" name="phone" placeholder="PHONE  (linked with AADHAR)"  required>
+          <span class="glyphicon glyphicon-earphone form-control-feedback"></span>
+        </div>
+
+        <div class="form-group has-feedback">
+          <input type="number" class="form-control" name="adhar" placeholder="AADHAR CARD NO."  required>
+          <span class="glyphicon glyphicon-folder-open form-control-feedback"></span>
+        </div>
+
+        <div class="form-group has-feedback">
+          <input type="text" class="form-control" name="pan" placeholder="PAN CARD NO."  required>
+          <span class="glyphicon glyphicon-file form-control-feedback"></span>
+        </div>
+
+        <div class="form-group has-feedback">
+          <input type="password" class="form-control" name="password" placeholder="Password"  required>
           <span class="glyphicon glyphicon-lock form-control-feedback"></span>
         </div>
+
         <div class="form-group has-feedback">
-          <input type="password" class="form-control" name="repassword" placeholder="Retype password" required>
-          <span class="glyphicon glyphicon-log-in form-control-feedback"></span>
+          <input type="text" class="form-control" name="dlr" placeholder="DLR ID"  required>
+          <span class="glyphicon glyphicon-barcode form-control-feedback"></span>
+          <p class="text-warning">DLR ID can be found on your Govt. approved license for Agricultural Commodity Trade.</p>
         </div>
-        <?php
-        if (!isset($_SESSION['captcha'])) {
-          echo '
-                <di class="form-group" style="width:100%;">
-                  <div class="g-recaptcha" data-sitekey="6LevO1IUAAAAAFX5PpmtEoCxwae-I8cCQrbhTfM6"></div>
-                </di>
-              ';
-        }
-        ?>
+
+
         <hr>
         <div class="row">
           <div class="col-xs-4">
@@ -76,7 +77,7 @@ if (isset($_SESSION['captcha'])) {
         </div>
       </form>
       <br>
-      <a href="login.php">I already have a membership</a><br>
+      <a href="login-dealer.php">Already have a Dealing Account? </a><br>
       <a href="index.php"><i class="fa fa-home"></i> Home</a>
     </div>
   </div>
