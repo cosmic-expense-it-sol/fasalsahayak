@@ -64,6 +64,7 @@ if (isset($_SESSION['user'])) {
       </form>
       <br>
       <a href="login.php">I already have a membership</a><br>
+      <a href="signup-dealer.php">Register as a Dealer!</a><br>
       <a href="index.php"><i class="fa fa-home"></i> Home</a>
     </div>
   </div>
