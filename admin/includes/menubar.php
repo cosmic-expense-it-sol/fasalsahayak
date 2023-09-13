@@ -32,8 +32,8 @@
                 </ul>
             </li>
             <li class="header">DEALERS ADMINISTRATION</li>
-            <li><a href="home.php"><i class="fa fa-check"></i> <span>Verification</span></a></li>
-            <li><a href="sales.php"><i class="fa fa-money"></i> <span>Sales</span></a></li>
+            <li><a href="dealer_info.php"><i class="fa fa-money"></i> <span>Dealers</span></a></li>
+            <li><a href="verification-dealer.php"><i class="fa fa-check"></i> <span>Verification</span></a></li>
         </ul>
     </section>
     <!-- /.sidebar -->
