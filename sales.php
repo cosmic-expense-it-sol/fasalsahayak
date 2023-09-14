@@ -1,8 +1,8 @@
 <?php
 	include 'includes/session.php';
 
-	if(isset($_GET['pay'])){
-		$payid = $_GET['pay'];
+	if(isset($_POST['razorpay_payment_id'])){
+		$payid = $_POST['razorpay_payment_id'];
 		$date = date('Y-m-d');
 
 		$conn = $pdo->open();

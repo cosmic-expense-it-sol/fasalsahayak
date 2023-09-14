@@ -13,7 +13,7 @@
 				<section class="content">
 					<div class="row">
 						<div class="col-sm-9">
-							<h1 class="page-header">YOUR CART</h1>
+							<h1 class="page-header">YOUR CART </h1>
 							<div class="box box-solid">
 								<div class="box-body">
 									<table class="table table-bordered">
@@ -32,15 +32,47 @@
 							</div>
 							<?php
 							if (isset($_SESSION['user'])) {
-								echo "
-	        					<div id='paypal-button'></div>
-	        				";
+								echo '
+								<a class="btn btn-primary" href="payment.php">Pay</a>
+	        				';
 							} else {
 								echo "
 	        					<h4>You need to <a href='login.php'>Login</a> to checkout.</h4>
 	        				";
 							}
 							?>
+
+							<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+							<script>
+								var options = {
+									"key": "<?php echo $keyId ?>", // Enter the Key ID generated from the Dashboard
+									"amount": "<?php echo $orderData['amount'] ?>", // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+									"currency": "INR",
+									"name": "Fasal Sahayak Payment Portal",
+									"description": "Fasal Sahayak E-com Services Payment",
+									"image": "https://cdn.vectorstock.com/i/preview-1x/35/38/crop-protection-or-insurance-icon-logo-vector-39513538.jpg",
+									"order_id": "<?php echo $orderData['id'] ?>", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+
+									"callback_url": "sales.php",
+									"prefill": {
+										"name": "",
+										"email": "",
+										"contact": ""
+									},
+									"theme": {
+										"color": "#A6A6A6"
+									}
+								};
+								var rzp1 = new Razorpay(options);
+								rzp1.on('payment.failed', function(response) {
+									window.location.href = "pay_failed.php";
+								});
+								document.getElementById('rzp-button1').onclick = function(e) {
+									rzp1.open();
+									e.preventDefault();
+								}
+							</script>
+
 						</div>
 						<div class="col-sm-3">
 							<?php include 'includes/sidebar.php'; ?>
@@ -156,45 +188,7 @@
 			});
 		}
 	</script>
-	<!-- Paypal Express -->
-	<script>
-		paypal.Button.render({
-			env: 'sandbox', // change for production if app is live,
 
-			client: {
-				sandbox: 'ASb1ZbVxG5ZFzCWLdYLi_d1-k5rmSjvBZhxP2etCxBKXaJHxPba13JJD_D3dTNriRbAv3Kp_72cgDvaZ',
-				//production: 'AaBHKJFEej4V6yaArjzSx9cuf-UYesQYKqynQVCdBlKuZKawDDzFyuQdidPOBSGEhWaNQnnvfzuFB9SM'
-			},
-
-			commit: true, // Show a 'Pay Now' button
-
-			style: {
-				color: 'gold',
-				size: 'small'
-			},
-
-			payment: function(data, actions) {
-				return actions.payment.create({
-					payment: {
-						transactions: [{
-							//total purchase
-							amount: {
-								total: total,
-								currency: 'USD'
-							}
-						}]
-					}
-				});
-			},
-
-			onAuthorize: function(data, actions) {
-				return actions.payment.execute().then(function(payment) {
-					window.location = 'sales.php?pay=' + payment.id;
-				});
-			},
-
-		}, '#paypal-button');
-	</script>
 </body>
 
 </html>
