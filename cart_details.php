@@ -113,6 +113,8 @@
 		
 	}
 
+$stmt = $conn->prepare("UPDATE `temp` SET `value` =:total WHERE `key`='total';");
+$stmt->execute(['total' => $total]);
 	$pdo->close();
 	echo json_encode($output);
 
