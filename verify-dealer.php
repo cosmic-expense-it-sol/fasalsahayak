@@ -15,7 +15,7 @@
 			if($row['numrows'] > 0){
 				if($row['status']==1){
 					if(password_verify($password, $row['password'])){
-							$_SESSION['dealer'] = $row['id'];
+							$_SESSION['dlr'] = $row['id'];
 					}
 					else{
 						$_SESSION['error'] = 'Incorrect Password';
@@ -42,6 +42,6 @@
 
 	$pdo->close();
 
-	header('location: login-dealer.php');
+	header('location: dealer/category.php');
 
 ?>

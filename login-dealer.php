@@ -3,6 +3,9 @@
 if (isset($_SESSION['user'])) {
   header('location: cart_view.php');
 }
+if (isset($_SESSION['dlr'])) {
+  header('location: cart_view.php');
+}
 ?>
 <?php include 'includes/header.php'; ?>
 
